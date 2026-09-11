@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { DashboardOverview } from './components/DashboardOverview';
 import { SatelliteMapViewer } from './components/SatelliteMapViewer';
@@ -10,7 +10,7 @@ import { ReportModal } from './components/ReportModal';
 import { ApiKeyModal } from './components/ApiKeyModal';
 import { MOIL_MINES, INITIAL_ALERTS, INITIAL_CORRECTIVE_ACTIONS, MINE_BOREHOLES, MINE_SATELLITE_DATA } from './data/moilData';
 import { MineLocation, OperationalAlert, CorrectiveActionItem } from './types';
-import { CheckCircle2, AlertCircle } from 'lucide-react';
+import { CheckCircle2, AlertCircle, ArrowUp } from 'lucide-react';
 
 export default function App() {
   const [selectedMine, setSelectedMine] = useState<MineLocation>(MOIL_MINES[0]);
@@ -29,8 +29,28 @@ export default function App() {
   const [isReportModalOpen, setIsReportModalOpen] = useState<boolean>(false);
   const [isAiAnalyzingReserve, setIsAiAnalyzingReserve] = useState<boolean>(false);
   const [aiReserveResult, setAiReserveResult] = useState<any>(null);
+
   const [isAiPredictingShortfall, setIsAiPredictingShortfall] = useState<boolean>(false);
   const [aiShortfallResult, setAiShortfallResult] = useState<any>(null);
+
+  // Scroll to top button visibility state
+  const [showScrollTop, setShowScrollTop] = useState<boolean>(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 250) {
+        setShowScrollTop(true);
+      } else {
+        setShowScrollTop(false);
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   // Toast notification state
   const [toastMessage, setToastMessage] = useState<{ text: string; type: 'success' | 'info' } | null>(null);
@@ -160,7 +180,7 @@ export default function App() {
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-amber-500 selection:text-slate-950">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center space-x-2 bg-slate-900 border border-slate-700 shadow-2xl px-4 py-3 rounded-xl text-xs text-white animate-slide-up">
+        <div className="fixed bottom-20 right-6 z-50 flex items-center space-x-2 bg-slate-900 border border-slate-700 shadow-2xl px-4 py-3 rounded-xl text-xs text-white animate-slide-up">
           {toastMessage.type === 'success' ? (
             <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
           ) : (
@@ -168,6 +188,19 @@ export default function App() {
           )}
           <span>{toastMessage.text}</span>
         </div>
+      )}
+
+      {/* Floating Scroll to Top Arrow Button */}
+      {showScrollTop && (
+        <button
+          id="btn-scroll-to-top"
+          onClick={scrollToTop}
+          aria-label="Scroll to top"
+          className="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 p-3 rounded-full shadow-2xl shadow-amber-950/60 transition-all duration-300 hover:scale-110 active:scale-95 border border-amber-300/60 focus:outline-none flex items-center justify-center group"
+          title="Scroll to Top"
+        >
+          <ArrowUp className="w-5 h-5 group-hover:-translate-y-0.5 transition-transform stroke-[2.5]" />
+        </button>
       )}
 
       {/* Top Navbar */}
