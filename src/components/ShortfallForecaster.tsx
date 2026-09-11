@@ -198,7 +198,7 @@ export const ShortfallForecaster: React.FC<ShortfallForecasterProps> = ({
         <div className="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-sm">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
             <div>
-              <h3 className="text-sm font-bold text-white">30-Day Predictive Extraction Envelope (P10 / P50 / P90)</h3>
+              <h3 className="text-sm font-bold text-white">30-Day Predictive Extraction Envelope (P90 / P50 / P10)</h3>
               <p className="text-xs text-slate-400">Probabilistic machine learning forecast under current weather & fleet conditions</p>
             </div>
             <span className="text-xs font-mono bg-slate-800 text-slate-300 px-2 py-0.5 rounded">
@@ -213,12 +213,29 @@ export const ShortfallForecaster: React.FC<ShortfallForecasterProps> = ({
                 <XAxis dataKey="day" stroke="#64748b" tick={{ fontSize: 11 }} />
                 <YAxis stroke="#64748b" tick={{ fontSize: 11 }} domain={[800, 1700]} />
                 <Tooltip
-                  contentStyle={{
-                    backgroundColor: '#0f172a',
-                    borderColor: '#334155',
-                    borderRadius: '8px',
-                    fontSize: '12px',
-                    color: '#f8fafc',
+                  content={({ active, payload, label }) => {
+                    if (active && payload && payload.length) {
+                      const orderMap: Record<string, number> = { p90Best: 1, p50Expected: 2, p10Worst: 3 };
+                      const sortedPayload = [...payload].sort(
+                        (a, b) => (orderMap[a.dataKey as string] || 99) - (orderMap[b.dataKey as string] || 99)
+                      );
+                      return (
+                        <div className="bg-slate-900 border border-slate-700 rounded-xl p-3 text-xs shadow-xl space-y-1.5 font-sans">
+                          <p className="font-bold text-slate-200 border-b border-slate-800 pb-1">{label}</p>
+                          {sortedPayload.map((entry: any) => (
+                            <div key={entry.dataKey} className="flex items-center justify-between space-x-4">
+                              <span style={{ color: entry.color }} className="font-semibold">
+                                {entry.name} :
+                              </span>
+                              <span className="font-mono font-bold" style={{ color: entry.color }}>
+                                {entry.value}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      );
+                    }
+                    return null;
                   }}
                 />
                 <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '6px' }} />
