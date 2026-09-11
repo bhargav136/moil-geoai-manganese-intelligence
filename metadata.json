@@ -1,0 +1,6 @@
+{
+  "name": "MOIL GeoAI - Manganese Reserve & Production Intelligence",
+  "description": "AI and space technology platform for MOIL Limited to map manganese reserves, forecast production shortfalls, analyze satellite multispectral data, and optimize mining operations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
