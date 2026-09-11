@@ -33,8 +33,10 @@ export const ReportModal: React.FC<ReportModalProps> = ({
   const boreholes = MINE_BOREHOLES[selectedMine.id] || MINE_BOREHOLES['balaghat'] || [];
   const deficitMt = Math.max(0, selectedMine.monthlyPlannedTargetMt - selectedMine.currentActualMt);
   const appliedActions = actions.filter((a) => a.status === 'Applied');
-  const reportDate = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
-  const refNo = `MOIL-OPS-${selectedMine.id.toUpperCase()}-${new Date().getFullYear()}`;
+  const now = new Date();
+  const reportDate = now.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+  const reportTime = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+  const refNo = `MOIL-OPS-${selectedMine.id.toUpperCase()}-${now.getFullYear()}`;
 
   const handlePrint = () => {
     const content = printRef.current;
@@ -260,7 +262,7 @@ export const ReportModal: React.FC<ReportModalProps> = ({
       <div class="mine-name">Mine Unit: ${selectedMine.name} &nbsp;|&nbsp; ${selectedMine.district}, ${selectedMine.state}</div>
     </div>
     <div class="meta-right">
-      <div>Date: ${reportDate}</div>
+      <div>Date: ${reportDate} ${reportTime} IST</div>
       <div>Shift: General / Handover</div>
       <div>Ref: ${refNo}</div>
       <div><span class="badge-valid">✓ AI Model Validated</span></div>
@@ -467,7 +469,7 @@ export const ReportModal: React.FC<ReportModalProps> = ({
               </p>
             </div>
             <div className="text-right text-[11px] font-mono text-slate-400">
-              <p>Date: {reportDate}</p>
+              <p>Date: {reportDate} {reportTime} IST</p>
               <p>Shift: General / Handover</p>
               <p>Ref: {refNo}</p>
               <p className="text-emerald-400 font-bold">Status: AI Model Validated</p>
