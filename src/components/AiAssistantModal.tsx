@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Bot, X, Send, Sparkles, User, RefreshCw } from 'lucide-react';
 import { MineLocation } from '../types';
 
@@ -22,6 +22,8 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
   selectedMine,
   apiKey,
 }) => {
+  const chatEndRef = useRef<HTMLDivElement>(null);
+
   if (!isOpen) return null;
 
   const [inputMessage, setInputMessage] = useState<string>('');
@@ -34,6 +36,10 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
     },
   ]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, isLoading]);
 
   const quickPrompts = [
     `How to eliminate the current shortfall at ${selectedMine.name}?`,
@@ -177,6 +183,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
               <span>Analyzing drill & satellite inputs...</span>
             </div>
           )}
+          <div ref={chatEndRef} />
         </div>
 
         {/* Quick Suggestion Chips */}

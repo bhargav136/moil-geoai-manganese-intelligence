@@ -282,8 +282,8 @@ export const ShortfallForecaster: React.FC<ShortfallForecasterProps> = ({
             </div>
 
             <div className="space-y-1.5 text-xs">
-              {rootCausesData.map((item, idx) => (
-                <div key={idx} className="flex items-center justify-between text-slate-300">
+              {rootCausesData.map((item) => (
+                <div key={item.name} className="flex items-center justify-between text-slate-300">
                   <div className="flex items-center space-x-2">
                     <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: item.color }}></span>
                     <span className="truncate max-w-[150px]">{item.name}</span>
