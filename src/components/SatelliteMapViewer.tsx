@@ -97,8 +97,8 @@ export const SatelliteMapViewer: React.FC<SatelliteMapViewerProps> = ({ selected
       if (baseMapType === 'street') {
         tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
       } else if (baseMapType === 'dark') {
-        tileUrl = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
-        maxZoom = 20;
+        tileUrl = 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}';
+        maxZoom = 19;
       }
 
       const baseTile = L.tileLayer(tileUrl, {
@@ -143,8 +143,8 @@ export const SatelliteMapViewer: React.FC<SatelliteMapViewerProps> = ({ selected
     if (baseMapType === 'street') {
       tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     } else if (baseMapType === 'dark') {
-      tileUrl = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
-      maxZoom = 20;
+      tileUrl = 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}';
+      maxZoom = 19;
     }
 
     const baseTile = L.tileLayer(tileUrl, {
